@@ -1,13 +1,21 @@
-int trig = 9;
-int echo = 8;
+int trigPin = 9;
+int echoPin= 8;
 int led = 7;
-
+int relay =10;
+long duration;
+int cm;
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27,16,2); 
 void setup()
 {
+  lcd.init();                  
+  lcd.backlight();
   Serial.begin(9600);
-  pinMode(trig, OUTPUT);
-  pinMode(echo, INPUT); 
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT); 
   pinMode(led, OUTPUT); 
+  pinMode(relay, OUTPUT); 
 }
 
 void loop()
@@ -23,9 +31,22 @@ void loop()
  delay(250);
  Serial.print(cm);
  Serial.print("cm");
-   if (cm>=20)
+ lcd.setCursor(2,1);
+  
+lcd.print(cm);
+lcd.print("cm");
+ 
+   if (cm<=5)
    {
  digitalWrite(led,HIGH);
+ digitalWrite(relay,LOW);
+ 
+ delay(1000);
+}
+   else 
+   {
+ digitalWrite(led,LOW);
+  digitalWrite(relay,HIGH);
  
  delay(1000);
 }
